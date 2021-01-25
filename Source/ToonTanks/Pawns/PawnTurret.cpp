@@ -19,7 +19,7 @@ void APawnTurret::Tick(float DeltaTime) {
 }
 
 void APawnTurret::CheckFireCondition() {
-    if (!Player) return;
+    if (!Player || !Player->IsPlayerAlive()) return;
     if (DistanceToPlayer() <= FireRange) {
         Fire();
     }
@@ -30,6 +30,7 @@ float APawnTurret::DistanceToPlayer() {
     return FVector::Dist(Player->GetActorLocation(), GetActorLocation());
 }
 
-void APawnTurret::OnDestroy() {
-    Super::OnDestroy();
+void APawnTurret::HandleDestruction() {
+    Super::HandleDestruction();
+    Destroy();
 }

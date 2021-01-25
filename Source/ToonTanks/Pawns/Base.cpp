@@ -3,6 +3,9 @@
 
 #include "Base.h"
 #include "Components/CapsuleComponent.h"
+#include "ToonTanks/Actors/ProjectileBase.h"
+#include "ToonTanks/Components/HealthComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABase::ABase() {
@@ -20,6 +23,8 @@ ABase::ABase() {
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("Projectile Spawn Point"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
+
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 }
 
 void ABase::RotateTurret(FVector LookTarget) {
@@ -31,9 +36,17 @@ void ABase::RotateTurret(FVector LookTarget) {
 }
 
 void ABase::Fire() {
+	if (Projectile) {
+		FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
+		FRotator SpawnRotation = ProjectileSpawnPoint->GetComponentRotation();
+		AProjectileBase* TempProjectile = GetWorld()->SpawnActor<AProjectileBase>(Projectile, SpawnLocation, SpawnRotation);
+		TempProjectile->SetOwner(this);
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Firing!"));
 }
 
-void ABase::OnDestroy() {
-
+void ABase::HandleDestruction() {
+	UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticle, GetActorLocation());
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(DeathShake);
 }

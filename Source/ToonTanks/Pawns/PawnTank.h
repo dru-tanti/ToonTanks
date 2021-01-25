@@ -24,6 +24,7 @@ class TOONTANKS_API APawnTank : public ABase
 		UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables", meta = (AllowPrivateAccess = "true")) float TurnSpeed = 100.f;
 
 		APlayerController* PlayerController;
+		bool bIsPlayerAlive = true;
 
 		void CalculateMoveInput(float Value);
 		void CalculateRotationInput(float Value);
@@ -37,10 +38,13 @@ class TOONTANKS_API APawnTank : public ABase
 		virtual void Tick(float DeltaTime) override;  
 		// Called to bind functionality to input
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+		virtual void HandleDestruction() override;
+		bool IsPlayerAlive() {
+			return bIsPlayerAlive;
+		}
 
 	protected:
 		// Called when the game starts or when spawned
 		virtual void BeginPlay() override;
-		virtual void OnDestroy() override;
 		
 };

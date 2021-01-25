@@ -10,7 +10,11 @@
 		}
 	],
 	"settings": {
-		"typescript.tsc.autoDetect": "off"
+		"typescript.tsc.autoDetect": "off",
+		"C_Cpp.default.forcedInclude": [
+			"D:\\Projects\\ToonTanks\\Intermediate\\Build\\Win64\\UE4Editor\\Development\\ToonTanks\\Definitions.ToonTanks.h",
+			"D:\\Projects\\ToonTanks\\Intermediate\\Build\\Win64\\ToonTanksEditor\\Development\\Engine\\SharedPCH.Engine.ShadowErrors.h"
+		]
 	},
 	"extensions": {
 		"recommendations": [
